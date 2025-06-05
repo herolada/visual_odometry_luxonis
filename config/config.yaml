@@ -1,0 +1,7 @@
+/**:
+  ros__parameters:
+    device_id: 14442C10613A1AD000
+    rescale: True
+    width: 640
+    height: 400
+    fps: 10.
