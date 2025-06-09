@@ -112,7 +112,7 @@ class RTABMapVIONode(Node):
     def __init__(self):
         super().__init__('rtabmap_vio')
 
-        self.declare_parameter('device_id', '14442C10613A1AD000')
+        self.declare_parameter('device_id', '14442C10B11BEFCF00')
         self.device_id_ = self.get_parameter('device_id').get_parameter_value().string_value
 
         self.declare_parameter('rescale', True)
@@ -137,7 +137,7 @@ class RTABMapVIONode(Node):
 
         print("Available devices:")
         for device in dai.Device.getAllAvailableDevices():
-            print(f"{device.getMxId()} {device.state}")
+            print(f"{device.getDeviceId()} {device.state}")
 
         # 14442C102133AECF00 
         # 14442C108101EDCF00 
@@ -219,16 +219,22 @@ class RTABMapVIONode(Node):
         # Fill header
         self.msg.header.stamp.sec = ts.seconds #data.getTimestamp().seconds
         self.msg.header.stamp.nanosec = ts.microseconds * 1000 #data.getTimestamp().microseconds * 1000
+        #msg.header.stamp = self.get_clock().now().to_msg()
         self.msg.header.frame_id = "odom"
         self.msg.child_frame_id = "camera_front"
 
-        self.msg.pose.pose.orientation.x = data.getQuaternion().qx
-        self.msg.pose.pose.orientation.y = data.getQuaternion().qy
-        self.msg.pose.pose.orientation.z = data.getQuaternion().qz
-        self.msg.pose.pose.orientation.w = data.getQuaternion().qw
-        self.msg.pose.pose.position.x = data.getTranslation().x
-        self.msg.pose.pose.position.y = data.getTranslation().y
-        self.msg.pose.pose.position.z = data.getTranslation().z
+        quat = data.getQuaternion()
+        translation = data.getTranslation()
+
+        # Position
+        self.msg.pose.pose.position.x = translation.x
+        self.msg.pose.pose.position.y = translation.y
+        self.msg.pose.pose.position.z = translation.z
+
+        self.msg.pose.pose.orientation.x = quat.qx
+        self.msg.pose.pose.orientation.y = quat.qy
+        self.msg.pose.pose.orientation.z = quat.qz
+        self.msg.pose.pose.orientation.w = quat.qw
 
     def timer_callback(self):
         if self.p.isRunning():
