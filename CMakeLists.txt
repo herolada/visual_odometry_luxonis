@@ -7,10 +7,10 @@ find_package(ament_cmake_python REQUIRED)
 
 ament_python_install_package(${PROJECT_NAME})
 
-# install(
-#   DIRECTORY launch rviz config
-#   DESTINATION share/${PROJECT_NAME}
-# )
+install(
+  DIRECTORY launch config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 install(PROGRAMS
     visual_odometry/visual_odometry.py

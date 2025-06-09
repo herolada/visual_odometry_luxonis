@@ -1,7 +1,9 @@
 /**:
   ros__parameters:
-    device_id: 14442C10613A1AD000
+    device_id: 14442C108101EDCF00 # tof: 14442C102133AECF00
     rescale: True
-    width: 640
-    height: 400
+    init_with_global_odom: True
+    width: 480
+    height: 300
     fps: 10.
+    odom_frame: gps_odom
